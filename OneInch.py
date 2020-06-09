@@ -324,11 +324,11 @@ if __name__ == '__main__':
     w3.middleware_onion.add(middleware.simple_cache_middleware)
     w3.eth.setGasPriceStrategy(fast_gas_price_strategy)
     while True:
-        action = input("\nWhat should I do? [LIST]List Tokens, [LOAD]Load Tokens, [GENERATE] generate address, "
-                       "[APPROVE] approve token, [PRINT] print current pub address, [QUOTE] request a quote\n"
-                       "using the 1inch contract, [BALANCE] print current balance, "
-                       "[TOKENBALANCE] print current token balance, "
-                       "[ALLOWANCE] check allowance, [TOKEN] print token info: ").upper()
+        action = input("\nWhat should I do?\n[LIST]List Tokens\n[LOAD]Load Tokens\n[GENERATE] generate address"
+                       "\n[PRINT] print current pub address\n[APPROVE] approve token for swap (format: approve <token> <quantity>)\n[QUOTE] request a quote using the 1inch contract (format: quote <from_token> <to_token> <quantity>)"
+                       "\n[BALANCE] print current Eth balance (format: balance)"
+                       "\n[TOKENBALANCE] print current token balance (format: tokenbalance <token>)\n[API] probe 1inch for an arbitrage opportunity (format: api <from_token> <to_token> <quantity>)"
+                       "\n[ALLOWANCE] check allowance (format: allowance <token>)\n[TOKEN] print token info (format: token <token>)\n").upper()
         if action == 'LIST':
             oneInch.list_tokens()
         elif action == 'LOAD':
