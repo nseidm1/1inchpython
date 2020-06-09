@@ -148,7 +148,7 @@ class OneInch:
                 print(str(w3.fromWei(int(swap_to_json['fromTokenAmount']), 'ether')) +
                       " " + swap_to_json['fromToken']['symbol'] + " to " +
                       str(w3.fromWei(int(swap_to_json['toTokenAmount']), 'ether')) +
-                      " " + swap_to_json['toToken']['symbol'] + ": " + result[0])
+                      " " + str(swap_to_json['toToken']['symbol']) + ": " + str(result[0]))
                 if int(swap_to_json['toTokenAmount']) > int(swap_from_result.json()['fromTokenAmount']):
                     print("Arbitrage Detected for: {}".format(result[0]))
                     return
@@ -340,25 +340,25 @@ if __name__ == '__main__':
         elif action.lower().startswith("APPROVE".lower()):
             splits = action[7:].strip().split()
             if len(splits) < 2:
-                print("required format \"quote {fromToken} {toToken} {quantity} \"")
+                print("required format \"quote {fromToken} {toToken} {quantity}\"")
             else:
                 oneInch.approve_tokens(splits[0], w3.toWei(float(splits[1]), 'ether'))
         elif action.lower().startswith("API".lower()):
             splits = action[3:].strip().split()
             if len(splits) < 3:
-                print("required format \"quote {fromToken} {toToken} {quantity} \"")
+                print("required format \"quote {fromToken} {toToken} {quantity}\"")
             else:
                 oneInch.api_arbitrage_detector(splits[0], splits[1], w3.toWei(float(splits[2]), 'ether'))
         elif action.lower().startswith("QUOTE".lower()):
             splits = action[5:].strip().split()
             if len(splits) < 3:
-                print("required format \"quote {fromToken} {toToken} {quantity} \"")
+                print("required format \"quote {fromToken} {toToken} {quantity}\"")
             else:
                 oneInch.quote(splits[0], splits[1], w3.toWei(float(splits[2]), 'ether'))
         elif action.lower().startswith("SWAP".lower()):
             splits = action[4:].strip().split()
             if len(splits) < 3:
-                print("required format \"quote {fromToken} {toToken} {quantity} \"")
+                print("required format \"quote {fromToken} {toToken} {quantity}\"")
             else:
                 oneInch.swap(splits[0], splits[1], w3.toWei(float(splits[2]), 'ether'))
         elif action.lower().startswith("ALLOWANCE".lower()):
