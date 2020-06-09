@@ -6,7 +6,7 @@ A simple python script that offers the following functions:
 
 [LOAD] Load Tokens
 
-[GENERATE] generate address
+[GENERATE] generate new private key
 
 [PRINT] print current pub address
 
