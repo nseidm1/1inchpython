@@ -20,7 +20,7 @@ A simple python script that offers the following functions:
   
 [API] probe 1inch for an arbitrage opportunity (format: api 'from_token' 'to_token> <quantity')
   
-[ALLOWANCE] check allowance (format: allowance 'token')
+[ALLOWANCE] check allowance for a specific token (format: allowance 'token')
   
 [TOKEN] print token info (format: token 'token')
   
