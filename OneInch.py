@@ -9,14 +9,14 @@ os.environ['WEB3_INFURA_API_SECRET'] = '4c1dd095f5e7411c9b71668b6770e0be'
 from web3.auto.infura import w3
 import numpy as np
 
-with open('ChiAbi', 'r') as chi_abi_file:
+with open('Chi.abi', 'r') as chi_abi_file:
     chi_abi = json.load(chi_abi_file)
-with open('Gst2Abi', 'r') as gst2_abi_file:
+with open('Gst2.abi', 'r') as gst2_abi_file:
     gst2_abi = json.load(gst2_abi_file)
 
-one_inch_split_abi = json.load(open('SplitContract', 'r'))
-mcd_abi = json.load(open('JoinContract', 'r'))
-token_abi = json.load(open('TokenAbi', 'r'))
+one_inch_split_abi = json.load(open('SplitContract.abi', 'r'))
+mcd_abi = json.load(open('JoinContract.abi', 'r'))
+token_abi = json.load(open('Token.abi', 'r'))
 
 with open('PrivateKey') as privateKey:
     privateKey = privateKey.read()
