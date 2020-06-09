@@ -58,7 +58,11 @@ class OneInch:
     def generate_address():
         private_key = w3.eth.account.create(quantumrandom.hex(1000, 1000))
         print(private_key.address)
-        print(private_key.privateKey.hex())
+        private_key_file = open("PrivateKey", "w")
+        private_key_file.write(private_key.privateKey.hex())
+        private_key_file.close()
+        print("Private key written to file, take care it's in plain text. "
+              "Calling this function again will overwrite it.")
 
     @staticmethod
     def print_current_pub_address():
