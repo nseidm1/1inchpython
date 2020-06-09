@@ -3,31 +3,28 @@ import json
 import os
 import quantumrandom
 import asyncio
+import numpy as np
+from web3 import middleware
+from web3.gas_strategies.time_based import fast_gas_price_strategy
 
 os.environ['WEB3_INFURA_PROJECT_ID'] = '90af2ec8351c43f9b82b17026d01a9a1'
 os.environ['WEB3_INFURA_API_SECRET'] = '4c1dd095f5e7411c9b71668b6770e0be'
 from web3.auto.infura import w3
-import numpy as np
 
 with open('Chi.abi', 'r') as chi_abi_file:
     chi_abi = json.load(chi_abi_file)
 with open('Gst2.abi', 'r') as gst2_abi_file:
     gst2_abi = json.load(gst2_abi_file)
+with open('PrivateKey') as privateKeyFile:
+    privateKey = privateKeyFile.read()
 
 one_inch_split_abi = json.load(open('SplitContract.abi', 'r'))
 mcd_abi = json.load(open('JoinContract.abi', 'r'))
 token_abi = json.load(open('Token.abi', 'r'))
 
-with open('PrivateKey') as privateKeyFile:
-    privateKey = privateKeyFile.read()
-
 chi_contract_address = w3.toChecksumAddress('0x0000000000004946c0e9F43F4Dee607b0eF1fA1c')
 gst2_contract_address = w3.toChecksumAddress('0x0000000000b3F879cb30FE243b4Dfee438691c04')
 one_inch_split_contract = w3.toChecksumAddress('0xC586BeF4a0992C495Cf22e1aeEE4E446CECDee0E')
-
-from web3 import middleware
-from web3.gas_strategies.time_based import fast_gas_price_strategy
-
 loop = asyncio.get_event_loop()
 
 
