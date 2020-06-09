@@ -2,9 +2,9 @@
 
 A simple python script that offers the following functions:
 
-[LIST]List Tokens
+[LIST] List Tokens
 
-[LOAD]Load Tokens
+[LOAD] Load Tokens
 
 [GENERATE] generate address
 
