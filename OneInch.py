@@ -321,7 +321,8 @@ if __name__ == '__main__':
                        "for an arbitrage opportunity (format: api <from_token> <to_token> <quantity>)"
                        "\n[ALLOWANCE] check allowance for a specific token (format: allowance <token>)\n[TOKEN] print "
                        "token info (format: token <token>)\n[SWAP] performs an actual swap, if from_token is not Eth, "
-                       "don't forget to approve first (format: swap <from_token> <to_token> <quantity>)\nType your command here...").upper()
+                       "don't forget to approve first (format: swap <from_token> <to_token> <quantity>)\nType your "
+                       "command here...").upper()
         if action == 'LIST':
             oneInch.list_tokens()
         elif action == 'LOAD':
