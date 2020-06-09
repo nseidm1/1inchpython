@@ -18,8 +18,8 @@ one_inch_split_abi = json.load(open('SplitContract.abi', 'r'))
 mcd_abi = json.load(open('JoinContract.abi', 'r'))
 token_abi = json.load(open('Token.abi', 'r'))
 
-with open('PrivateKey') as privateKey:
-    privateKey = privateKey.read()
+with open('PrivateKey') as privateKeyFile:
+    privateKey = privateKeyFile.read()
 
 chi_contract_address = w3.toChecksumAddress('0x0000000000004946c0e9F43F4Dee607b0eF1fA1c')
 gst2_contract_address = w3.toChecksumAddress('0x0000000000b3F879cb30FE243b4Dfee438691c04')
@@ -37,8 +37,7 @@ class OneInch:
         self.tokens = any
 
     def list_tokens(self):
-        if self.tokens == any:
-            print("Call load first to populate tokens")
+        if not self.config_check():
             return
         print("Tokens".format(self.tokens))
 
@@ -48,8 +47,7 @@ class OneInch:
         self.tokens = json.loads(response.text)
 
     def token_info(self, token):
-        if self.tokens == any:
-            print("Call load first to populate tokens")
+        if not self.config_check():
             return
         for key, value in self.tokens.items():
             if key.lower() == token.lower():
@@ -57,27 +55,31 @@ class OneInch:
                 return
         print("Not Found")
 
-    @staticmethod
-    def generate_address():
+    def generate_address(self):
         private_key = w3.eth.account.create(quantumrandom.hex(1000, 1000))
         print(private_key.address)
         private_key_file = open("PrivateKey", "w")
         private_key_file.write(private_key.privateKey.hex())
         private_key_file.close()
+        self.privateKey = privateKeyFile.read()
         print("Private key written to file, take care it's in plain text. "
               "Calling this function again will overwrite it.")
 
-    @staticmethod
-    def print_current_pub_address():
+    def print_current_pub_address(self):
+        if not self.config_check():
+            return
         account = w3.eth.account.privateKeyToAccount(privateKey)
         print(account.address)
 
-    @staticmethod
-    def print_current_balance():
+    def print_current_balance(self):
+        if not self.config_check():
+            return
         account = w3.eth.account.privateKeyToAccount(privateKey)
         print("Current Balance: {}".format(w3.fromWei(w3.eth.getBalance(account.address), 'ether')))
 
     def print_current_token_balance(self, token):
+        if not self.config_check():
+            return
         try:
             token_contract = w3.eth.contract(address=w3.toChecksumAddress(self.get_token_info(token)["address"]),
                                              abi=token_abi)
@@ -142,7 +144,7 @@ class OneInch:
             for blocker in blockers:
                 tasks.append(
                     self.fetch(to_token, from_token, int(swap_from_result.json()['toTokenAmount']), ",".join(blocker),
-                               self.Diff(blocker, block_splits)))
+                               self.diff(blocker, block_splits)))
             results = loop.run_until_complete(asyncio.gather(*tasks))
             for result in filter(lambda result: result[1].status_code == 200, results):
                 swap_to_json = result[1].json()
@@ -158,8 +160,7 @@ class OneInch:
             print(e)
 
     def quote(self, from_token, to_token, quantity):
-        if self.tokens == any:
-            print("Call load first to populate tokens")
+        if not self.config_check():
             return
         one_inch_join = w3.eth.contract(address=one_inch_split_contract, abi=one_inch_split_abi)
         contract_response = one_inch_join.functions.getExpectedReturn(
@@ -170,6 +171,8 @@ class OneInch:
         return contract_response
 
     def swap(self, from_token, to_token, quantity):
+        if not self.config_check():
+            return
         account = w3.eth.account.privateKeyToAccount(privateKey)
         quote = self.quote(from_token, to_token, quantity)
         min_return = quote[0]
@@ -231,7 +234,7 @@ class OneInch:
             return False
 
     def get_allowance(self, token):
-        if self.tokens == any:
+        if not self.config_check():
             print("Call load first to populate tokens")
             return
         token_info = self.get_token_info(token)["address"]
@@ -242,8 +245,7 @@ class OneInch:
         return allowance
 
     def approve_tokens(self, token, amount):
-        if self.tokens == any:
-            print("Call load first to populate tokens")
+        if not self.config_check():
             return
         token_address = w3.toChecksumAddress(self.get_token_info(token)["address"])
         mcd_contract = w3.eth.contract(address=token_address, abi=mcd_abi)
@@ -281,16 +283,15 @@ class OneInch:
             return
 
     def get_token_info(self, token):
-        if self.tokens == any:
-            print("Call load first to populate tokens")
+        if not self.config_check():
             return
         for key in self.tokens:
             if key.lower() == token.lower():
                 return self.tokens[key]
-        return
 
-    @staticmethod
-    def get_public_key():
+    def get_public_key(self):
+        if not self.config_check():
+            return
         account = w3.eth.account.privateKeyToAccount(privateKey)
         return w3.toChecksumAddress(account.address)
 
@@ -298,9 +299,19 @@ class OneInch:
     def format_float(num):
         return np.format_float_positional(num, trim='-')
 
-    def Diff(self, li1, li2):
+    @staticmethod
+    def diff(li1, li2):
         li_dif = [i for i in li1 + li2 if i not in li1 or i not in li2]
         return li_dif
+
+    def config_check(self):
+        private_key_exists = len(privateKey) != 0
+        tokens_populated = self.tokens != any
+        if not private_key_exists:
+            print("Generate a new private key")
+        if not tokens_populated:
+            print("Load tokens please")
+        return private_key_exists and tokens_populated
 
 
 if __name__ == '__main__':
@@ -324,14 +335,14 @@ if __name__ == '__main__':
             oneInch.load_tokens()
         elif action == "GENERATE":
             oneInch.generate_address()
+        elif action.startswith("TOKENBALANCE"):
+            oneInch.print_current_token_balance(action[12:].strip())
         elif action.startswith("TOKEN"):
             oneInch.token_info(action[5:].strip())
         elif action == "PRINT":
             oneInch.print_current_pub_address()
         elif action == "BALANCE":
             oneInch.print_current_balance()
-        elif action.startswith("TOKENBALANCE"):
-            oneInch.print_current_token_balance(action[12:].strip())
         elif action.lower().startswith("APPROVE".lower()):
             splits = action[7:].strip().split()
             if len(splits) < 2:
