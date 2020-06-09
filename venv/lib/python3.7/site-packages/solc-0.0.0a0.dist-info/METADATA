@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: solc
+Version: 0.0.0a0
+Summary: placeholder
+Home-page: UNKNOWN
+Author: Ben Hauser
+Author-email: ben@hauser.id
+License: MIT
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.4, <4
+
+
+This package is just a placeholder.
+
+You might be looking for https://pypi.org/project/py-solc-x/
+
+
