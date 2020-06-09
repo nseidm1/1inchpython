@@ -18,7 +18,7 @@ A simple python script that offers the following functions:
 
 [TOKENBALANCE] print current token balance (format: tokenbalance 'token')
   
-[API] probe 1inch for an arbitrage opportunity (format: api 'from_token' 'to_token> <quantity')
+[API] probe 1inch for an arbitrage opportunity (format: api 'from_token' 'to_token' 'quantity')
   
 [ALLOWANCE] check allowance for a specific token (format: allowance 'token')
   
