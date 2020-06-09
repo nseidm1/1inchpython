@@ -173,17 +173,9 @@ class OneInch:
         account = w3.eth.account.privateKeyToAccount(privateKey)
         quote = self.quote(from_token, to_token, quantity)
         min_return = quote[0]
-
-        # list of dist across exchanges like: [99, 0, 1, 0, 0, 0, 0, 0, 0, 0]
         distribution = quote[1]
-
-        # use all available exchanges
         disable_flags = 0
-
-        # load our contract
         one_inch_join = w3.eth.contract(address=one_inch_split_contract, abi=one_inch_split_abi)
-
-        # get our nonce
         nonce = w3.eth.getTransactionCount(self.get_public_key())
 
         print("From Token Info: {}".format(self.get_token_info(from_token)))
