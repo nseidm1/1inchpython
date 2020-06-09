@@ -139,9 +139,9 @@ class OneInch:
 
             tasks = []
             for blocker in blockers:
-                tasks.append(
-                    self.fetch(to_token, from_token, int(swap_from_result.json()['toTokenAmount']), ",".join(blocker),
-                               self.diff(blocker, block_splits)))
+                tasks.append(self.fetch(to_token, from_token,
+                                        int(swap_from_result.json()['toTokenAmount']), ",".join(blocker),
+                                        self.diff(blocker, block_splits)))
             results = loop.run_until_complete(asyncio.gather(*tasks))
             for result in filter(lambda result: result[1].status_code == 200, results):
                 swap_to_json = result[1].json()
