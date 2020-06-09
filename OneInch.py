@@ -37,6 +37,9 @@ class OneInch:
         self.tokens = any
 
     def list_tokens(self):
+        if self.tokens == any:
+            print("Call load first to populate tokens")
+            return
         print("Tokens".format(self.tokens))
 
     def load_tokens(self):
